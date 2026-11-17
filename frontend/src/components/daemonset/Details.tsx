@@ -21,6 +21,7 @@ import {
   ContainersSection,
   DetailsGrid,
   LogsButton,
+  MatchExpressions,
   MetadataDictGrid,
   OwnedPodsSection,
   RevisionHistorySection,
@@ -122,7 +123,12 @@ export default function DaemonSetDetails(props: {
           },
           {
             name: t('Selector'),
-            value: <MetadataDictGrid dict={item.spec.selector.matchLabels || {}} />,
+            value: (
+              <>
+                <MetadataDictGrid dict={item.spec.selector.matchLabels || {}} />
+                <MatchExpressions matchExpressions={item.spec.selector.matchExpressions} />
+              </>
+            ),
           },
           {
             name: t('Node Selector'),

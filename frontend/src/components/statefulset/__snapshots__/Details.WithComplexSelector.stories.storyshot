@@ -288,6 +288,16 @@
                         </p>
                       </div>
                     </div>
+                    <p
+                      class="MuiTypography-root MuiTypography-body1 css-cwic1g-MuiTypography-root"
+                    >
+                      zone in (us-east-1a,us-east-1b)
+                    </p>
+                    <p
+                      class="MuiTypography-root MuiTypography-body1 css-cwic1g-MuiTypography-root"
+                    >
+                      !canary
+                    </p>
                   </dd>
                 </dl>
               </div>

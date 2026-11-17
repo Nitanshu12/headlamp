@@ -27,6 +27,7 @@ import {
   DetailsGrid,
   launchWorkloadLogs,
   LogsButton,
+  MatchExpressions,
   MetadataDictGrid,
   OwnedPodsSection,
 } from '../common/Resource';
@@ -150,10 +151,13 @@ export default function JobDetails(props: { name?: string; namespace?: string; c
           },
           {
             name: t('glossary|Selector'),
-            value: item.spec?.selector?.matchLabels && (
-              <MetadataDictGrid
-                dict={item.spec.selector.matchLabels as { [key: string]: string }}
-              />
+            value: (item.spec?.selector?.matchLabels || item.spec?.selector?.matchExpressions) && (
+              <>
+                <MetadataDictGrid
+                  dict={(item.spec.selector.matchLabels ?? {}) as { [key: string]: string }}
+                />
+                <MatchExpressions matchExpressions={item.spec.selector.matchExpressions} />
+              </>
             ),
           },
           {

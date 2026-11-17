@@ -205,6 +205,10 @@ WithComplexSelector.parameters = {
                     tier: 'backend',
                     environment: 'production',
                   },
+                  matchExpressions: [
+                    { key: 'zone', operator: 'In', values: ['us-east-1a', 'us-east-1b'] },
+                    { key: 'canary', operator: 'DoesNotExist' },
+                  ],
                 },
               },
             });

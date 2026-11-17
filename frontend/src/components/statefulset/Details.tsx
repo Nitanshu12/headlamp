@@ -22,6 +22,7 @@ import {
   ContainersSection,
   DetailsGrid,
   LogsButton,
+  MatchExpressions,
   MetadataDictGrid,
   OwnedPodsSection,
   RevisionHistorySection,
@@ -67,7 +68,12 @@ export default function StatefulSetDetails(props: {
           },
           {
             name: t('Selector'),
-            value: <MetadataDictGrid dict={item.spec.selector.matchLabels as StringDict} />,
+            value: (
+              <>
+                <MetadataDictGrid dict={item.spec.selector.matchLabels as StringDict} />
+                <MatchExpressions matchExpressions={item.spec.selector.matchExpressions} />
+              </>
+            ),
           },
         ]
       }

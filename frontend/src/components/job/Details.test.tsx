@@ -24,7 +24,7 @@ const { mockDetailsGrid } = vi.hoisted(() => ({
   mockDetailsGrid: vi.fn(),
 }));
 
-vi.mock('../common/Resource', () => ({
+vi.mock('../common/Resource', async () => ({
   DetailsGrid: (props: any) => {
     mockDetailsGrid(props);
     const { onResourceUpdate } = props;
@@ -36,6 +36,11 @@ vi.mock('../common/Resource', () => ({
   LogsButton: () => null,
   ConditionsSection: () => null,
   ContainersSection: () => null,
+  MatchExpressions: (
+    await vi.importActual<typeof import('../common/Resource/MatchExpressions')>(
+      '../common/Resource/MatchExpressions'
+    )
+  ).MatchExpressions,
   MetadataDictGrid: () => null,
   OwnedPodsSection: () => null,
 }));
@@ -108,6 +113,32 @@ describe('JobDetails', () => {
     expect(fieldNames.some((n: string) => n.includes('Duration'))).toBe(true);
     expect(fieldNames.some((n: string) => n.includes('Suspend'))).toBe(true);
     expect(fieldNames.some((n: string) => n.includes('Selector'))).toBe(true);
+  });
+
+  it('shows matchExpressions in the Selector row', () => {
+    const jobWithExpressions: any = {
+      ...fakeJob,
+      spec: {
+        ...fakeJob.spec,
+        selector: {
+          matchExpressions: [{ key: 'tier', operator: 'In', values: ['web', 'api'] }],
+        },
+      },
+    };
+
+    render(
+      <TestContext routerMap={{ namespace: 'default', name: 'test-job' }}>
+        <JobDetails />
+      </TestContext>
+    );
+
+    const props = mockDetailsGrid.mock.calls[0][0];
+    const selectorField = props
+      .extraInfo(jobWithExpressions)
+      .find((f: any) => f.name.includes('Selector'));
+    const { getByText } = render(<>{selectorField.value}</>);
+
+    expect(getByText('tier in (api,web)')).toBeInTheDocument();
   });
 
   it('hides Status row when no conditions exist', () => {

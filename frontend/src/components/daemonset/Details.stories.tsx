@@ -92,3 +92,14 @@ export default {
 export const Default = makeStory(DAEMONSET_DUMMY);
 
 export const NoTolerations = makeStory(DAEMONSET_NO_TOLERATIONS);
+
+export const WithMatchExpressions = makeStory({
+  ...DAEMONSET_DUMMY,
+  spec: {
+    ...DAEMONSET_DUMMY.spec,
+    selector: {
+      matchLabels: { 'k8s-app': 'gadget' },
+      matchExpressions: [{ key: 'tier', operator: 'NotIn', values: ['canary'] }],
+    },
+  },
+});
